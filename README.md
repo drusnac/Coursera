@@ -1,2 +1,2 @@
 # Coursera
-Products as part of Coursera Courses
+This repo is a dump of Coursera related projects
