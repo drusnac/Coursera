@@ -1,0 +1,508 @@
+Jupyter Notebook Logout Control PanelWeek2 (autosaved) 
+Python 3 
+File
+Edit
+View
+Insert
+Cell
+Kernel
+Widgets
+Help
+CellToolbar
+Basic Plotting with matplotlib
+You can show matplotlib figures directly in the notebook by using the %matplotlib notebook and %matplotlib inline magic commands.
+%matplotlib notebook provides an interactive environment.
+In [1]:
+
+%matplotlib notebook
+
+%matplotlib notebook
+​
+In [2]:
+
+import matplotlib as mpl
+mpl.get_backend()
+Out[2]:
+'nbAgg'
+In [3]:
+
+import matplotlib.pyplot as plt
+plt.plot?
+In [4]:
+
+# because the default is the line style '-', 
+# nothing will be shown if we only pass in one point (3,2)
+plt.plot(3, 2)
+
+Out[4]:
+[<matplotlib.lines.Line2D at 0x7f8fcf87b9b0>]
+In [5]:
+
+# we can pass in '.' to plt.plot to indicate that we want
+# the point (3,2) to be indicated with a marker '.'
+plt.plot(3, 2, '.')
+Out[5]:
+[<matplotlib.lines.Line2D at 0x7f8fcf860518>]
+Let's see how to make a plot without using the scripting layer.
+In [6]:
+
+# First let's set the backend without using mpl.use() from the scripting layer
+from matplotlib.backends.backend_agg import FigureCanvasAgg
+from matplotlib.figure import Figure
+​
+# create a new figure
+fig = Figure()
+​
+# associate fig with the backend
+canvas = FigureCanvasAgg(fig)
+​
+# add a subplot to the fig
+ax = fig.add_subplot(111)
+​
+# plot the point (3,2)
+ax.plot(3, 2, '.')
+​
+# save the figure to test.png
+# you can see this figure in your Jupyter workspace afterwards by going to
+# https://hub.coursera-notebooks.org/
+canvas.print_png('test.png')
+We can use html cell magic to display the image.
+In [7]:
+
+%%html
+<img src='test.png' />
+
+In [10]:
+
+# create a new figure
+plt.figure()
+​
+# plot the point (3,2) using the circle marker
+plt.plot(3, 2, 'o')
+​
+# get the current axes
+ax = plt.gca()
+​
+# Set axis properties [xmin, xmax, ymin, ymax]
+ax.axis([0,6,0,10])
+
+Out[10]:
+[0, 6, 0, 10]
+In [11]:
+
+# create a new figure
+plt.figure()
+​
+# plot the point (1.5, 1.5) using the circle marker
+plt.plot(1.5, 1.5, 'o')
+# plot the point (2, 2) using the circle marker
+plt.plot(2, 2, 'o')
+# plot the point (2.5, 2.5) using the circle marker
+plt.plot(2.5, 2.5, 'o')
+
+Out[11]:
+[<matplotlib.lines.Line2D at 0x7f8fbc371940>]
+In [12]:
+
+# get current axes
+ax = plt.gca()
+# get all the child objects the axes contains
+ax.get_children()
+Out[12]:
+[<matplotlib.lines.Line2D at 0x7f8fbc3717b8>,
+ <matplotlib.lines.Line2D at 0x7f8fca857438>,
+ <matplotlib.lines.Line2D at 0x7f8fbc371940>,
+ <matplotlib.spines.Spine at 0x7f8fca864160>,
+ <matplotlib.spines.Spine at 0x7f8fca864390>,
+ <matplotlib.spines.Spine at 0x7f8fca864588>,
+ <matplotlib.spines.Spine at 0x7f8fca864780>,
+ <matplotlib.axis.XAxis at 0x7f8fca864940>,
+ <matplotlib.axis.YAxis at 0x7f8fbc347e48>,
+ <matplotlib.text.Text at 0x7f8fbc35f828>,
+ <matplotlib.text.Text at 0x7f8fbc35f898>,
+ <matplotlib.text.Text at 0x7f8fbc35f908>,
+ <matplotlib.patches.Rectangle at 0x7f8fbc35f940>]
+Scatterplots
+In [13]:
+
+import numpy as np
+​
+x = np.array([1,2,3,4,5,6,7,8])
+y = x
+​
+plt.figure()
+plt.scatter(x, y) # similar to plt.plot(x, y, '.'), but the underlying child objects in the axes are not Line2D
+
+Out[13]:
+<matplotlib.collections.PathCollection at 0x7f8fbc2f6080>
+In [14]:
+
+import numpy as np
+​
+x = np.array([1,2,3,4,5,6,7,8])
+y = x
+​
+# create a list of colors for each point to have
+# ['green', 'green', 'green', 'green', 'green', 'green', 'green', 'red']
+colors = ['green']*(len(x)-1)
+colors.append('red')
+​
+plt.figure()
+​
+# plot the point with size 100 and chosen colors
+plt.scatter(x, y, s=100, c=colors)
+
+Out[14]:
+<matplotlib.collections.PathCollection at 0x7f8fbc26a3c8>
+In [ ]:
+
+# convert the two lists into a list of pairwise tuples
+zip_generator = zip([1,2,3,4,5], [6,7,8,9,10])
+​
+print(list(zip_generator))
+# the above prints:
+# [(1, 6), (2, 7), (3, 8), (4, 9), (5, 10)]
+​
+zip_generator = zip([1,2,3,4,5], [6,7,8,9,10])
+# The single star * unpacks a collection into positional arguments
+print(*zip_generator)
+# the above prints:
+# (1, 6) (2, 7) (3, 8) (4, 9) (5, 10)
+In [ ]:
+
+# use zip to convert 5 tuples with 2 elements each to 2 tuples with 5 elements each
+print(list(zip((1, 6), (2, 7), (3, 8), (4, 9), (5, 10))))
+# the above prints:
+# [(1, 2, 3, 4, 5), (6, 7, 8, 9, 10)]
+​
+​
+zip_generator = zip([1,2,3,4,5], [6,7,8,9,10])
+# let's turn the data back into 2 lists
+x, y = zip(*zip_generator) # This is like calling zip((1, 6), (2, 7), (3, 8), (4, 9), (5, 10))
+print(x)
+print(y)
+# the above prints:
+# (1, 2, 3, 4, 5)
+# (6, 7, 8, 9, 10)
+In [15]:
+
+plt.figure()
+# plot a data series 'Tall students' in red using the first two elements of x and y
+plt.scatter(x[:2], y[:2], s=100, c='red', label='Tall students')
+# plot a second data series 'Short students' in blue using the last three elements of x and y 
+plt.scatter(x[2:], y[2:], s=100, c='blue', label='Short students')
+
+Out[15]:
+<matplotlib.collections.PathCollection at 0x7f8fbc20a4a8>
+In [16]:
+
+# add a label to the x axis
+plt.xlabel('The number of times the child kicked a ball')
+# add a label to the y axis
+plt.ylabel('The grade of the student')
+# add a title
+plt.title('Relationship between ball kicking and grades')
+Out[16]:
+<matplotlib.text.Text at 0x7f8fbc238438>
+In [17]:
+
+# add a legend (uses the labels from plt.scatter)
+plt.legend()
+Out[17]:
+<matplotlib.legend.Legend at 0x7f8fbc20a4e0>
+In [18]:
+
+# add the legend to loc=4 (the lower right hand corner), also gets rid of the frame and adds a title
+plt.legend(loc=4, frameon=False, title='Legend')
+Out[18]:
+<matplotlib.legend.Legend at 0x7f8fcd0b1f98>
+In [19]:
+
+# get children from current axes (the legend is the second to last item in this list)
+plt.gca().get_children()
+Out[19]:
+[<matplotlib.collections.PathCollection at 0x7f8fbc1d86d8>,
+ <matplotlib.collections.PathCollection at 0x7f8fbc20a4a8>,
+ <matplotlib.spines.Spine at 0x7f8fbc20af28>,
+ <matplotlib.spines.Spine at 0x7f8fbc217198>,
+ <matplotlib.spines.Spine at 0x7f8fbc217390>,
+ <matplotlib.spines.Spine at 0x7f8fbc217588>,
+ <matplotlib.axis.XAxis at 0x7f8fbc217748>,
+ <matplotlib.axis.YAxis at 0x7f8fbc220cc0>,
+ <matplotlib.text.Text at 0x7f8fbc238438>,
+ <matplotlib.text.Text at 0x7f8fbc2384a8>,
+ <matplotlib.text.Text at 0x7f8fbc238518>,
+ <matplotlib.legend.Legend at 0x7f8fcd0b1f98>,
+ <matplotlib.patches.Rectangle at 0x7f8fbc238550>]
+In [22]:
+
+# get the legend from the current axes
+legend = plt.gca().get_children()[-2]
+In [21]:
+
+# you can use get_children to navigate through the child artists
+legend.get_children()[0].get_children()[1].get_children()[0].get_children()
+Out[21]:
+[<matplotlib.offsetbox.HPacker at 0x7f8fbc1e94e0>,
+ <matplotlib.offsetbox.HPacker at 0x7f8fbc1e9518>]
+In [23]:
+
+# import the artist class from matplotlib
+from matplotlib.artist import Artist
+​
+def rec_gc(art, depth=0):
+    if isinstance(art, Artist):
+        # increase the depth for pretty printing
+        print("  " * depth + str(art))
+        for child in art.get_children():
+            rec_gc(child, depth+2)
+​
+# Call this function on the legend artist to see what the legend is made up of
+rec_gc(plt.legend())
+Legend
+    <matplotlib.offsetbox.VPacker object at 0x7f8fbc214b70>
+        <matplotlib.offsetbox.TextArea object at 0x7f8fbc18eba8>
+            Text(0,0,'None')
+        <matplotlib.offsetbox.HPacker object at 0x7f8fbc250400>
+            <matplotlib.offsetbox.VPacker object at 0x7f8fbc1f8240>
+                <matplotlib.offsetbox.HPacker object at 0x7f8fbc18e550>
+                    <matplotlib.offsetbox.DrawingArea object at 0x7f8fbc1f8e80>
+                        <matplotlib.collections.PathCollection object at 0x7f8fbc1f8780>
+                    <matplotlib.offsetbox.TextArea object at 0x7f8fbc1f8390>
+                        Text(0,0,'Tall students')
+                <matplotlib.offsetbox.HPacker object at 0x7f8fbc18eda0>
+                    <matplotlib.offsetbox.DrawingArea object at 0x7f8fbc204a20>
+                        <matplotlib.collections.PathCollection object at 0x7f8fbc272630>
+                    <matplotlib.offsetbox.TextArea object at 0x7f8fbc1f8080>
+                        Text(0,0,'Short students')
+    FancyBboxPatch(0,0;1x1)
+Line Plots
+In [26]:
+
+import numpy as np
+​
+linear_data = np.array([1,2,3,4,5,6,7,8])
+exponential_data = linear_data**2
+​
+plt.figure()
+# plot the linear data and the exponential data
+plt.plot(linear_data, '-o', exponential_data, '-o')
+
+Out[26]:
+[<matplotlib.lines.Line2D at 0x7f8fbc0ec6d8>,
+ <matplotlib.lines.Line2D at 0x7f8fbc0ec828>]
+In [27]:
+
+# plot another series with a dashed red line
+plt.plot([22,44,55], '--r')
+Out[27]:
+[<matplotlib.lines.Line2D at 0x7f8fbc101dd8>]
+In [28]:
+
+plt.xlabel('Some data')
+plt.ylabel('Some other data')
+plt.title('A title')
+# add a legend with legend entries (because we didn't have labels when we plotted the data series)
+plt.legend(['Baseline', 'Competition', 'Us'])
+Out[28]:
+<matplotlib.legend.Legend at 0x7f8fbc0a3e10>
+In [29]:
+
+# fill the area between the linear data and exponential data
+plt.gca().fill_between(range(len(linear_data)), 
+                       linear_data, exponential_data, 
+                       facecolor='blue', 
+                       alpha=0.25)
+Out[29]:
+<matplotlib.collections.PolyCollection at 0x7f8fbc1430b8>
+Let's try working with dates!
+In [30]:
+
+plt.figure()
+​
+observation_dates = np.arange('2017-01-01', '2017-01-09', dtype='datetime64[D]')
+​
+plt.plot(observation_dates, linear_data, '-o',  observation_dates, exponential_data, '-o')
+
+Out[30]:
+[<matplotlib.lines.Line2D at 0x7f8fca8744e0>,
+ <matplotlib.lines.Line2D at 0x7f8fca8740f0>]
+Let's try using pandas
+In [31]:
+
+import pandas as pd
+​
+plt.figure()
+observation_dates = np.arange('2017-01-01', '2017-01-09', dtype='datetime64[D]')
+observation_dates = map(pd.to_datetime, observation_dates) # trying to plot a map will result in an error
+plt.plot(observation_dates, linear_data, '-o',  observation_dates, exponential_data, '-o')
+---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+/opt/conda/lib/python3.5/site-packages/matplotlib/units.py in get_converter(self, x)
+    144                 # get_converter
+--> 145                 if not np.all(xravel.mask):
+    146                     # some elements are not masked
+
+AttributeError: 'numpy.ndarray' object has no attribute 'mask'
+
+During handling of the above exception, another exception occurred:
+
+TypeError                                 Traceback (most recent call last)
+<ipython-input-31-31d150774667> in <module>()
+      4 observation_dates = np.arange('2017-01-01', '2017-01-09', dtype='datetime64[D]')
+      5 observation_dates = map(pd.to_datetime, observation_dates) # trying to plot a map will result in an error
+----> 6 plt.plot(observation_dates, linear_data, '-o',  observation_dates, exponential_data, '-o')
+
+/opt/conda/lib/python3.5/site-packages/matplotlib/pyplot.py in plot(*args, **kwargs)
+   3316                       mplDeprecation)
+   3317     try:
+-> 3318         ret = ax.plot(*args, **kwargs)
+   3319     finally:
+   3320         ax._hold = washold
+
+/opt/conda/lib/python3.5/site-packages/matplotlib/__init__.py in inner(ax, *args, **kwargs)
+   1890                     warnings.warn(msg % (label_namer, func.__name__),
+   1891                                   RuntimeWarning, stacklevel=2)
+-> 1892             return func(ax, *args, **kwargs)
+   1893         pre_doc = inner.__doc__
+   1894         if pre_doc is None:
+
+/opt/conda/lib/python3.5/site-packages/matplotlib/axes/_axes.py in plot(self, *args, **kwargs)
+   1404         kwargs = cbook.normalize_kwargs(kwargs, _alias_map)
+   1405 
+-> 1406         for line in self._get_lines(*args, **kwargs):
+   1407             self.add_line(line)
+   1408             lines.append(line)
+
+/opt/conda/lib/python3.5/site-packages/matplotlib/axes/_base.py in _grab_next_args(self, *args, **kwargs)
+    414                 isplit = 2
+    415 
+--> 416             for seg in self._plot_args(remaining[:isplit], kwargs):
+    417                 yield seg
+    418             remaining = remaining[isplit:]
+
+/opt/conda/lib/python3.5/site-packages/matplotlib/axes/_base.py in _plot_args(self, tup, kwargs)
+    383             x, y = index_of(tup[-1])
+    384 
+--> 385         x, y = self._xy_from_xy(x, y)
+    386 
+    387         if self.command == 'plot':
+
+/opt/conda/lib/python3.5/site-packages/matplotlib/axes/_base.py in _xy_from_xy(self, x, y)
+    215     def _xy_from_xy(self, x, y):
+    216         if self.axes.xaxis is not None and self.axes.yaxis is not None:
+--> 217             bx = self.axes.xaxis.update_units(x)
+    218             by = self.axes.yaxis.update_units(y)
+    219 
+
+/opt/conda/lib/python3.5/site-packages/matplotlib/axis.py in update_units(self, data)
+   1411         """
+   1412 
+-> 1413         converter = munits.registry.get_converter(data)
+   1414         if converter is None:
+   1415             return False
+
+/opt/conda/lib/python3.5/site-packages/matplotlib/units.py in get_converter(self, x)
+    156                 if (not isinstance(next_item, np.ndarray) or
+    157                     next_item.shape != x.shape):
+--> 158                     converter = self.get_converter(next_item)
+    159                 return converter
+    160 
+
+/opt/conda/lib/python3.5/site-packages/matplotlib/units.py in get_converter(self, x)
+    159                 return converter
+    160 
+--> 161         if converter is None and iterable(x) and (len(x) > 0):
+    162             thisx = safe_first_element(x)
+    163             if classx and classx != getattr(thisx, '__class__', None):
+
+TypeError: object of type 'map' has no len()
+
+In [32]:
+
+plt.figure()
+observation_dates = np.arange('2017-01-01', '2017-01-09', dtype='datetime64[D]')
+observation_dates = list(map(pd.to_datetime, observation_dates)) # convert the map to a list to get rid of the error
+plt.plot(observation_dates, linear_data, '-o',  observation_dates, exponential_data, '-o')
+
+Out[32]:
+[<matplotlib.lines.Line2D at 0x7f8fa979d9b0>,
+ <matplotlib.lines.Line2D at 0x7f8fa97427b8>]
+In [39]:
+
+​
+x = plt.gca().xaxis
+#rec_gc(x)
+# rotate the tick labels for the x axis
+for item in x.get_ticklabels():
+    item.set_rotation(45)
+In [40]:
+
+# adjust the subplot so the text doesn't run off the image
+plt.subplots_adjust(bottom=0.25)
+In [41]:
+
+ax = plt.gca()
+ax.set_xlabel('Date')
+ax.set_ylabel('Units')
+ax.set_title('Exponential vs. Linear performance')
+Out[41]:
+<matplotlib.text.Text at 0x7f8fa979dc88>
+In [42]:
+
+# you can add mathematical expressions in any text element
+ax.set_title("Exponential ($x^2$) vs. Linear ($x$) performance")
+Out[42]:
+<matplotlib.text.Text at 0x7f8fa979dc88>
+Bar Charts
+In [43]:
+
+plt.figure()
+xvals = range(len(linear_data))
+plt.bar(xvals, linear_data, width = 0.3)
+
+Out[43]:
+<Container object of 8 artists>
+In [44]:
+
+new_xvals = []
+​
+# plot another set of bars, adjusting the new xvals to make up for the first set of bars plotted
+for item in xvals:
+    new_xvals.append(item+0.3)
+​
+plt.bar(new_xvals, exponential_data, width = 0.3 ,color='red')
+Out[44]:
+<Container object of 8 artists>
+In [45]:
+
+from random import randint
+linear_err = [randint(0,15) for x in range(len(linear_data))] 
+​
+# This will plot a new set of bars with errorbars using the list of random error values
+plt.bar(xvals, linear_data, width = 0.3, yerr=linear_err)
+Out[45]:
+<Container object of 8 artists>
+In [46]:
+
+# stacked bar charts are also possible
+plt.figure()
+xvals = range(len(linear_data))
+plt.bar(xvals, linear_data, width = 0.3, color='b')
+plt.bar(xvals, exponential_data, width = 0.3, bottom=linear_data, color='r')
+
+Out[46]:
+<Container object of 8 artists>
+In [47]:
+
+# or use barh for horizontal bar charts
+plt.figure()
+xvals = range(len(linear_data))
+plt.barh(xvals, linear_data, height = 0.3, color='b')
+plt.barh(xvals, exponential_data, height = 0.3, left=linear_data, color='r')
+
+Out[47]:
+<Container object of 8 artists>
+In [ ]:
+
+​
